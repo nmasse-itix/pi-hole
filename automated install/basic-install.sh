@@ -1998,8 +1998,13 @@ main() {
   # Install packages used by this installation script
   install_dependent_packages INSTALLER_DEPS[@]
 
-   # Check if SELinux is Enforcing
-  checkSelinux
+  # Skip the SELinux check on unattended install since it uses whiptail dialogs
+  if [[ "${runUnattended}" == true ]]; then
+    echo -e "  ${INFO} Skipping SELinux check since unattended install has been requested"
+  else
+    # Check if SELinux is Enforcing
+    checkSelinux
+  fi
 
   if [[ "${useUpdateVars}" == false ]]; then
     # Display welcome dialogs
